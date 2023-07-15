@@ -1,0 +1,19 @@
+{
+    "server_id": "server id",
+    "channels": {
+        "log": "log channel",
+        "general": "general channel",
+        "announcements": "announcements channel"
+    },
+    "roles": {
+
+    },
+    "members": {
+        "dev": "dev id",
+        "owner": "owner id",
+        "bot_admins": []
+    },
+    "emojis": {
+        
+    }
+}
