@@ -31,7 +31,7 @@ export const client = new Discord.Client({
 /* Startup */
 
 client.on('ready', async () => {
-    console.log(`Client ${client.user?.tag} - READY`);
+    console.log(`Client - ${client.user?.tag}: LOGGED IN`);
     await createCmds(client);
     runCommand(client, await readCmds());
 })

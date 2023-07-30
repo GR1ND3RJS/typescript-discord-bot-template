@@ -130,7 +130,7 @@ const DiscordInteractionEmbed: EmbedBuilder = Utils.createInfoEmbed(`This intera
 
 export default function runCommand(client: Client, options: CommandFile.FileOptions[]) {
 
-    console.log(`Started, no issues!`)
+    console.log(`Client Event - InteractionCreate: READY`)
 
 
     client.on('interactionCreate', async interaction => {
@@ -155,7 +155,7 @@ export default function runCommand(client: Client, options: CommandFile.FileOpti
             } else {
                 interaction.respond([{
                     name: 'Error - Not Configured :/',
-                    value: "Not set up"
+                    value: "==1515d105.d1105.DO15-"
                 }])
             }
         }

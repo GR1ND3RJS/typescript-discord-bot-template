@@ -1,11 +1,15 @@
 import Discord, { ActionRow, ActionRowBuilder, ButtonBuilder, Channel, ChannelSelectMenuBuilder, ChannelType, Client, ColorResolvable, Embed, EmbedBuilder, GuildMember, MentionableSelectMenuBuilder, MessageCreateOptions, MessagePayload, ModalBuilder, PermissionFlags, PermissionFlagsBits, PermissionsString, RoleSelectMenuBuilder, StringSelectMenuBuilder, TextChannel, TextInputBuilder, UserSelectMenuBuilder, } from 'discord.js';
-import { server_id, channels, roles } from '../config.json';
+import { server_id, channels, roles, colors, members } from '../config.json';
 import { client } from '..';
+import fs from 'fs';
+import path from 'path';
+import { PermissionLevel } from './types';
+const mediaDir = './src/media';
 
 type EmbedOptions = {
     description: string;
     title?: string;
-    color: 'Red' | 'Yellow' | 'Blurple' | 'Main';
+    color: ColorResolvable | 'Main';
     footer?: string;
     footerImage?: string;
     author?: string;
@@ -32,6 +36,7 @@ type PermissionMessage = {
 export interface UtilData {
     evaluateMemberPermissions(member: GuildMember, permissions: PermissionsString[] | PermissionsString): PermissionMessage;
     evaluateMemberRoles(member: GuildMember, roles: string[] | string): boolean;
+    evaluateMemberState(member: GuildMember): PermissionLevel;
     createInfoEmbed(description: string, color?: ColorResolvable): EmbedBuilder;
     createDmEmbed(options: EmbedOptions): EmbedBuilder;
     logMessageRaw(options: MessageCreateOptions): Promise<void>;
@@ -40,10 +45,43 @@ export interface UtilData {
     colors: {
         [key: string]: string;
     };
+    getImage(imageName: string): Discord.RawFile | undefined;
+    getVideo(videoName: string): Discord.RawFile | undefined;
 }
 
 
 const Utils : UtilData = {
+    getImage: (imageName) => {
+        const picDir = `${mediaDir}/pic/${imageName}`;
+
+        const file = fs.readFileSync(picDir);
+
+        if(!file) {
+            return undefined;
+        }
+
+        const rawFile: Discord.RawFile = {
+            data: picDir,
+            name: imageName,
+        }
+        return rawFile
+    },
+    getVideo: (videoName) => {
+        const vidDir = `${mediaDir}/vid/${videoName}`;
+
+        const file = fs.readFileSync(vidDir);
+
+        if(!file) {
+            return undefined;
+        }
+
+        const rawFile: Discord.RawFile = {
+            data: vidDir,
+            name: videoName,
+        }
+
+        return rawFile;
+    },
     logMessageRaw: async (options) => {
         const channelId: string = channels.log;
 
@@ -52,6 +90,34 @@ const Utils : UtilData = {
         const logChannel = await guild.channels.fetch(channelId) as TextChannel;
 
         await logChannel.send(options);
+    },
+    evaluateMemberState: (member) => {
+        // 'Public' | 'Booster' | 'Staff' | 'Admin' | 'Owner'| 'Developer'; 
+        let memberLevel: PermissionLevel = 'Public';
+
+
+        if(member.premiumSince !== undefined) {
+            memberLevel = 'Booster';
+        }
+
+        if(member.roles.cache.has(roles.staff)) {
+            memberLevel = 'Staff';
+        }
+
+
+        if(member.roles.cache.has(roles.admin)) {
+            memberLevel = 'Admin';
+        }
+
+        if(member.guild.ownerId === member.user.id) {
+            memberLevel = 'Owner';
+        }
+
+        if(member.user.id === members.dev) {
+            memberLevel = "Developer";
+        }
+
+        return memberLevel;
     },
     evaluateMemberPermissions: (member, p) => {
         if(typeof p === 'string') {
@@ -95,7 +161,7 @@ const Utils : UtilData = {
     createInfoEmbed: (description, color) => {
         const embed = new EmbedBuilder()
         .setDescription(description)
-        .setColor(color || "Blurple");
+        .setColor(color || colors.primary as ColorResolvable);
 
         return embed;
     },
@@ -109,7 +175,7 @@ const Utils : UtilData = {
         }
         if(color) {
             if(color === "Main") {
-                embed.setColor("Blurple")
+                embed.setColor(colors.primary as ColorResolvable)
             } else {
                 embed.setColor(color)
             }
@@ -124,7 +190,11 @@ const Utils : UtilData = {
         return embed;
     },
     colors: {
-
+        primary: colors.primary,
+        accent: colors.accent,
+        success: colors.success,
+        error: colors.error,
+        danger: colors.danger,
     },
     createRow: (type, components) => {
         const row = new ActionRowBuilder<ComponentOptions[typeof type]>()

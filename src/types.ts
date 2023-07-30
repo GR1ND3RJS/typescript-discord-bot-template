@@ -5,7 +5,7 @@ import { GroupNames } from '..';
 export type Interactions = Discord.CommandInteraction<Discord.CacheType> | Discord.ButtonInteraction<Discord.CacheType> | Discord.ModalSubmitInteraction<Discord.CacheType> | Discord.StringSelectMenuInteraction<Discord.CacheType> | Discord.RoleSelectMenuInteraction<Discord.CacheType> | Discord.UserSelectMenuInteraction<Discord.CacheType>  | Discord.MentionableSelectMenuInteraction<Discord.CacheType> | Discord.AnySelectMenuInteraction<Discord.CacheType>;
 
 
-type PermissionLevel = 'Public' | 'Booster' | 'Staff' | 'Admin' | 'Owner'| 'Developer'; 
+export type PermissionLevel = 'Public' | 'Booster' | 'Staff' | 'Admin' | 'Owner'| 'Developer'; 
 
 
 export namespace CommandFile {

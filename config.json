@@ -6,14 +6,22 @@
         "announcements": "announcements channel"
     },
     "roles": {
-
+        "admin": "",
+        "staff": ""
     },
     "members": {
-        "dev": "dev id",
+        "dev": "571673609953738784",
         "owner": "owner id",
         "bot_admins": []
     },
     "emojis": {
         
+    },
+    "colors": {
+        "primary": "HexValue",
+        "accent": "HexValue",
+        "success": "HexValue",
+        "error": "HexValue",
+        "danger": "HexValue"
     }
 }
