@@ -1,7 +1,6 @@
 {
   "name": "typescript-discord-bot-template",
   "version": "0.0.1",
-  "description": "",
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon index.ts",
@@ -11,8 +10,13 @@
   "author": "Ego",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
-    "mongoose": "^7.3.4"
+    "mongoose": "^7.3.4",
+    "ts-node": "^10.9.1"
+  },
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

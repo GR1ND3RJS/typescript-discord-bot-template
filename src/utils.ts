@@ -124,6 +124,10 @@ const Utils : UtilData = {
             p = [p];
         }
 
+        if(!p) return {
+            success: true
+        }
+
         let bool = true;
         let missingPerms: PermissionsString[] = []
         for(const perm of p) {
@@ -147,6 +151,8 @@ const Utils : UtilData = {
         if(typeof r === "string") {
             r = [r];
         }
+
+        if(!r) return true;
 
         let bool = true;
 
