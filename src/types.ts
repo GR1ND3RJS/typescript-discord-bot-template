@@ -1,4 +1,4 @@
-import Discord, { ApplicationCommandData, ChatInputCommandInteraction, ChatInputApplicationCommandData, PermissionsString, AutocompleteInteraction, UserApplicationCommandData, MessageApplicationCommandData, UserContextMenuCommandInteraction, ButtonInteraction, ModalSubmitInteraction, StringSelectMenuInteraction, RoleSelectMenuInteraction, UserSelectMenuInteraction, ChannelSelectMenuInteraction, MentionableSelectMenuInteraction, MessageContextMenuCommandInteraction, CacheType } from 'discord.js'
+import Discord, { ApplicationCommandData, ChatInputCommandInteraction, ChatInputApplicationCommandData, PermissionsString, AutocompleteInteraction, UserApplicationCommandData, MessageApplicationCommandData, UserContextMenuCommandInteraction, ButtonInteraction, ModalSubmitInteraction, StringSelectMenuInteraction, RoleSelectMenuInteraction, UserSelectMenuInteraction, ChannelSelectMenuInteraction, MentionableSelectMenuInteraction, MessageContextMenuCommandInteraction, CacheType, Events, ClientEvents, Client } from 'discord.js'
 import { UtilData } from './utils';
 import { GroupNames } from '..';
 
@@ -79,51 +79,13 @@ export namespace CommandFile {
 
     export type AnyMenu = StringDropDown | RoleDropDown | UserDropDown | ChannelDropDown | MentionableDropDown;
 
-    export type FileOptions = SlashCommand | UserCommand | MessageCommand | DiscordButton | DiscordModal
-    | AnyMenu;
-
-    // THIS IS MY OWN NAMESPACING, NOT FROM DISCORD.JS
-    // Used to make the command options easier to read
-    //If you want to create a new slash command, copy this:
-
-    /*
-
-    import Discord, { ButtonBuilder, hyperlink, SelectMenuInteraction } from 'discord.js';
-    import { CommandFile } from '../types';
-
-    export = {
-        command: {
-            name: 'name',
-            description: 'description',
-        },
-        callback: (interaction: Discord.CommandInteraction) => {
-
-        }
-    } as CommandFile.FileOptions;
-
-    */
-
-    // If you want to create any buttons, menus, etc. copy this:
-
-    /*
-
-    import Discord, { ButtonBuilder, hyperlink, SelectMenuInteraction } from 'discord.js';
-    import { CommandFile } from '../types';
-
-    export = {
-        name: 'name' 
-        type: 'type', //[only takes in dropdown, button, modal]
-    } as CommandFile.FileOptions;
-    callback: (interaction: Discord.XInteraction) => {
-            
+    export type EventOptions<T extends keyof Discord.ClientEvents> = {
+        name: T;
+        callback(client: Client, ...options: Discord.ClientEvents[T]): void | Promise<void>
     }
 
-    */
-
-    // FOR BUTTONS, MENUS, ETC. ONLY, the TYPES ARE:
-
-    // ButtonInteraction | ModalSubmitInteraction (modals) | SelectMenuInteraction (dropdown)
-    
+    export type InteractionOptions = SlashCommand | UserCommand | MessageCommand | DiscordButton | DiscordModal
+    | AnyMenu;
 }
 
 

@@ -11,4 +11,4 @@ export = {
     callback: (interaction, data) => {
         interaction.reply('Hello world!');
     },
-} as CommandFile.FileOptions;
+} as CommandFile.InteractionOptions;

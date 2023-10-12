@@ -1,11 +1,11 @@
 import Discord, { ApplicationCommandData } from 'discord.js'
-import readCmds from './readCmds';
+import readCommands from './readCmds';
 import { server_id } from '../config.json';
 import { CommandFile } from './types';
 
 
 export default async function createCmds(client: Discord.Client) {
-    const files = await readCmds();
+    const files = await readCommands();
     const commands: ApplicationCommandData[] = []
 
     const commandFiles = files.filter((file): file is CommandFile.SlashCommand | CommandFile.UserCommand | CommandFile.MessageCommand => 'command' in file);

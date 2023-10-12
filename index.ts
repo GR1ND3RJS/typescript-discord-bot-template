@@ -1,9 +1,10 @@
 /* Imports */
 import Discord, { PartialTextBasedChannel, Partials } from 'discord.js';
 import dotenv from 'dotenv';
-import readCmds from './src/readCmds';
+import readCommands from './src/readCmds';
 import runCommand from './src/runCmds';
 import createCmds from './src/createCmds';
+import runEvents from './src/runEvents';
 dotenv.config();
 
 /* File Imports */
@@ -33,7 +34,8 @@ export const client = new Discord.Client({
 client.on('ready', async () => {
     console.log(`Client - ${client.user?.tag}: LOGGED IN`);
     await createCmds(client);
-    runCommand(client, await readCmds());
+    await runEvents(client);
+    runCommand(client, await readCommands());
 })
 
 client.on('error', err => {

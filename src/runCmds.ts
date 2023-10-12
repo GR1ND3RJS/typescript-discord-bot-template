@@ -9,6 +9,7 @@ type CoolDown = { [key: string]: EpochTimeStamp; };
 const cooldowns: CoolDown = {};
 
 
+const DiscordInteractionEmbed: EmbedBuilder = Utils.createInfoEmbed(`This interaction is not yet configured. Ask the dev to fix it!`)
 
 
 /** Common MiddleWare for interaction commands such as `Slash Commands`, `User Context Menu Commands`, and `Message Context Menu Commands`.
@@ -63,7 +64,7 @@ async function commandMiddleWare(interaction: Discord.ChatInputCommandInteractio
             cooldowns[interaction.user.id] = new Date().getTime();
             setTimeout(() => {
                 delete cooldowns[interaction.user.id];
-            });
+            }, command.cooldown);
         }
     }
 
@@ -77,7 +78,7 @@ async function commandMiddleWare(interaction: Discord.ChatInputCommandInteractio
 }
 
 
-async function interactionMiddleware(interaction: Exclude<Interactions, CommandInteraction>, command: CommandFile.FileOptions): Promise<boolean> {
+async function interactionMiddleware(interaction: Exclude<Interactions, CommandInteraction>, command: CommandFile.InteractionOptions): Promise<boolean> {
     if(!Utils.evaluateMemberPermissions(await interaction.guild.members.fetch(interaction.member.user.id), command.permissions)) {
         interaction.reply({
             embeds: [
@@ -110,7 +111,7 @@ async function interactionMiddleware(interaction: Exclude<Interactions, CommandI
             cooldowns[interaction.user.id] = new Date().getTime();
             setTimeout(() => {
                 delete cooldowns[interaction.user.id];
-            });
+            }, command.cooldown);
         }
     }
 
@@ -124,11 +125,8 @@ async function interactionMiddleware(interaction: Exclude<Interactions, CommandI
 }
 
 
-const DiscordInteractionEmbed: EmbedBuilder = Utils.createInfoEmbed(`This interaction is not yet configured. Ask the dev to fix it!`)
 
-
-
-export default function runCommand(client: Client, options: CommandFile.FileOptions[]) {
+export default function runCommand(client: Client, options: CommandFile.InteractionOptions[]) {
 
     console.log(`Client Event - InteractionCreate: READY`)
 

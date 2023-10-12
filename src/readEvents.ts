@@ -1,14 +1,14 @@
 import path from 'path';
 import fs from 'fs';
-import Discord from 'discord.js';
+import Discord, { ClientEvents } from 'discord.js';
 import { CommandFile } from './types';
 // import runCmds from './runCmds';
 
 
 
-export default async function readCommands(): Promise<CommandFile.InteractionOptions[]> {
+export default async function readEvents(): Promise<CommandFile.EventOptions<keyof ClientEvents>[]> {
 
-    const FileOptions: CommandFile.InteractionOptions[] = [];
+    const FileOptions: CommandFile.EventOptions<keyof ClientEvents>[] = [];
 
 
     function readDir(directory: string) {
@@ -19,7 +19,7 @@ export default async function readCommands(): Promise<CommandFile.InteractionOpt
                 readDir(path.join(directory, file));
             } else {
                 const fileData = fs.readFileSync(path.join(__dirname, directory, file)).toString();
-                if (fileData.includes('CommandFile.FileOptions') || fileData.includes('CommandFile.FileOptions;')) {
+                if (fileData.includes('CommandFile.EventOptions') || fileData.includes('CommandFile.EventOptions;')) {
                     const option = require(path.join(__dirname, directory, file))
                     FileOptions.push(option);
                 }
@@ -27,7 +27,7 @@ export default async function readCommands(): Promise<CommandFile.InteractionOpt
         }
     }
 
-    readDir(`./commands`);
+    readDir(`./events`);
 
     return FileOptions;
 }

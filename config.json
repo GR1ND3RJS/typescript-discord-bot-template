@@ -18,10 +18,10 @@
         
     },
     "colors": {
-        "primary": "HexValue",
-        "accent": "HexValue",
-        "success": "HexValue",
-        "error": "HexValue",
-        "danger": "HexValue"
+        "primary": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "success": "#FFFFFF",
+        "error": "#FFFFFF",
+        "danger": "#FFFFFF"
     }
 }
